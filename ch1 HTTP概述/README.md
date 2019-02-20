@@ -114,7 +114,7 @@ Web缓存（Web cache）或 代理缓存（proxy cache）是一种特殊的HTTP�
 用户Agent代理是代表用户发起HTTP请求的客户端程序，所有发布Web请求的应用程序都是HTTP Agent代理。常见的Agent代理有：浏览器/网络蜘蛛/Web机器人等。
 
 
-
+![url输入请求](./url输入请求.png)
 
 
 
