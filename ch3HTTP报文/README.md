@@ -295,8 +295,52 @@ OPTIONS方法请求Web服务器告知其支持的各种功能。可以询问服�
 DELETE方法所做的事情就是请服务器删除请求URL所指定的资源.
 但是，HTTP/1.1 的 DELETE 方法本身和 PUT 方法一样不带验证机制，所以一般的Web网站也不使用DELETE方法。当配合Web应用程序的验证机制，或遵守REST标准时还是有可能会开放使用的.
 
+DELETE 方法成功执行，那么可能会有以下几种状态码：
+
+- 状态码  202 (Accepted) 表示请求的操作可能会成功执行，但是尚未开始执行。
+- 状态码 204 (No Content) 表示操作已执行，但是无进一步的相关信息。
+- 状态码  200 (OK) 表示操作已执行，并且响应中提供了相关状态的描述信息。
+
+```
+HTTP/1.1 200 OK
+Date: Wed, 21 Oct 2015 07:28:00 GMT
+
+<html>
+  <body>
+    <h1>File deleted.</h1>
+  </body>
+</html>
+
+```
+
+
 # 5.8 CONNECT
 CONNECT方法要求在与代理服务器通信时建立隧道，实现用隧道协议进行TCP通信。主要使用SSL(Secure Sockets Layer，安全套接层)和TLS(Transport Layer Security，传输层安全)协议把通信内容加密后经网络隧道传输.
+CONNECT这个方法的作用就是把服务器作为跳板，让服务器代替用户去访问其它网页，之后把数据原原本本的返回给用户。这样用户就可以访问到一些只有服务器上才能访问到的网站了，这就是HTTP代理。
+CONNECT方法是需要使用TCP直接去连接的，所以不适合在网页开发中使用。要使用CONNECT方法，首先要让服务器监听一个端口来接收CONNECT方法的请求。
+例如，CONNECT 可以用来访问采用了 SSL (HTTPS)  协议的站点。客户端要求代理服务器将 TCP 连接作为通往目的主机隧道。
+之后该代理服务器会代替客户端与目的主机建立连接。连接建立好之后，代理服务器会面向客户端发送或接收 TCP 消息流。
+
+```
+CONNECT server.example.com:80 HTTP/1.1
+Host: server.example.com:80
+Proxy-Authorization: basic aGVsbG86d29ybGQ=
+```
+如果用户名和密码验证通过，就会返回一个状态码为200的响应信息。虽然状态码是200，但是这个状态描述不是OK，而是**Connection Established**。验证通过之后，我们就可以做普通的HTTP操作
+
+
+
+
+
+
+
+
+GET，HEAD，PUT和DELETE方法都有这样的幂等属性，同样由于根据协议，OPTIONS，TRACE都不应有副作用，因此也理所当然也是幂等的
+
+
+POST方法/PATCH 非幂等
+
+
 
 
 # 6 状态码
