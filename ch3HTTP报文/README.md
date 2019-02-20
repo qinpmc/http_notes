@@ -74,6 +74,189 @@ Date:Tue,3Oct 1997 02:16:03 GMT
 Content-length:15040
 Content-type:image/gif
 
+## 3.1 通用首部
+
+有些首部提供了与报文相关的最基本的信息，它们被称为通用首部。
+
+### 3.1.1 通用信息首部
+
+![通用的信息性首部](通用的信息性首部.png)
+
+1. Connection
+Connection首部可以承载3种不同类型的标签：
+- a、HTTP首部字段名，列出了只与此连接有关的首部；
+- b、任意标签值，用于描述此连接的非标准选项；
+- c、值close，说明操作完成之后需关闭这条持久连接
+- d、值Keep-alive。
+a、首部字段名
+应用程序收到带有Connection首部的HTTP/1.1报文后，应该对列表进行解析，并删除报文中所有在Connection首部列表中出现过的首部。
+它主要用于有代理网络环境，这样服务器或其他代理就可以指定不应传递的逐跳首部。
+
+```
+GET / HTTP/1.1
+Upgrade:HTTP/1.1
+Connection:Upgrade
+```
+
+转发后：（删除Connection中给出的首部）
+
+```
+GET / HTTP/1.1
+```
+
+b、任意标签值
+任意标签值用于描述该连接。比如，如果是一个信用卡订单的连接.如：
+Connection: bill-my-credit-card
+
+c、close
+HTTP1.1版本的默认连接是持久连接。当服务器端想明确断开连接时，则指定Connection首部字段的值是Close，如：Connection: close。
+
+d、Keep-alive
+HTTP1.0版本的默认连接都是非持久连接。因此，如果想在旧版本的HTTP协议上维持持久连接，需要将connection指定为keep-alive。
+
+2. Date
+Date首部给出了报文创建的日期和时间。服务器响应中要包含这个首部，因为缓存在评估响应的新鲜度时，要用到这个服务器认定的报文创建时间和日期。
+对客户端来说，这个首部是可选的，但包含这个首部会更好 Date首部给出了报文创建的日期和时间。   HTTP/1.1 协议下示例：
+Date: Tue, 03 Jul 2016 04:40:59 GMT
+
+3. MIME-Version
+
+MIME是HTTP的近亲。尽管两者存在根本区別，但有些HTTP服务器确实构造了一些在MIME规范下同样有效的报文。在这种情况下，服务器可以提供MIME版本的首部，例如：
+MIME-Version: 1.0
+
+
+4. Trailer
+
+Trailer首部用于传输编码中，用于说明拖挂(在报文主体后记录)中提供了哪些首部，例如：
+Trailer: Expires，**报文主体后面会追加Expires信息**
+
+5. Transfer-Encoding
+首部字段Transfer-Encoding规定了传输报文主体时采用的编码方式。例如：
+**Transfer-Encoding: chunked** ，报文采用了分块编码，报文中的实体需要改为用一系列分块来传输。
+Content-Encoding 和 Transfer-Encoding 二者经常会结合来用，其实就是针对 Transfer-Encoding 的分块再进行 Content-Encoding压缩。如：
+Content-Encoding：gzip　
+
+6. Upgrade
+为了更方便地部署新协议，HTTP/1.1 引入了 Upgrade 机制，它使得客户端和服务端之间可以借助已有的 HTTP 语法升级到其它协议。
+
+```
+Connection: Upgrade
+Upgrade: protocol-name[/protocol-version]
+```
+示例 由HTTP1.1升级到websocket：
+HTTP 请求：
+```
+GET ws://example.com/ HTTP/1.1
+Connection: Upgrade
+Upgrade: websocket
+Origin: http://example.com
+Sec-WebSocket-Version: 13
+Sec-WebSocket-Key: d4egt7snxxxxxx2WcaMQlA==
+Sec-WebSocket-Extensions: permessage-deflate; client_max_window_bits
+```
+
+服务器响应(如果服务器不支持升级，会忽略Upgrade)：
+
+```
+HTTP/1.1 101 Switching Protocols
+Connection: Upgrade
+Upgrade: websocket
+Sec-WebSocket-Accept: gczJQPmQ4Ixxxxxx6pZO8U7UbZs=
+```
+在这之后，客户端和服务端之间就可以使用 WebSocket 协议进行双向数据通讯，跟 HTTP/1.1 没关系了。
+
+
+7. Via
+
+使用首部字段Via是为了追踪客户端与服务器之间的请求和响应报文的传输路径。
+报文经过代理或网关时，会先在首部字段Via中附加该服务器的信息，然后再进行转发。例如：
+Via: 1.0 fred, 1.1 p.example.net
+
+
+### 3.1.2 通用缓存首部
+
+![通用缓存首部](./通用缓存首部)
+
+1. Cache-Control
+
+缓存请求指令:
+Cache-Control: max-age=<seconds>
+Cache-Control: max-stale[=<seconds>]
+Cache-Control: min-fresh=<seconds>
+Cache-control: no-cache
+Cache-control: no-store
+Cache-control: no-transform
+Cache-control: only-if-cached
+
+缓存响应指令:
+
+Cache-control: must-revalidate
+Cache-control: no-cache
+Cache-control: no-store
+Cache-control: no-transform
+Cache-control: public
+Cache-control: private
+Cache-control: proxy-revalidate
+Cache-Control: max-age=<seconds>
+Cache-control: s-maxage=<seconds>
+
+
+- public
+Cache-Control: public,表明响应可以被任何对象（包括：发送请求的客户端，代理服务器，等等）缓存.
+
+- private
+Cache-Control: private,表明响应只能被单个用户缓存，不能作为共享缓存（即代理服务器不能缓存它）.
+
+
+- no-cache
+在释放缓存副本之前，强制高速缓存将请求提交给原始服务器进行验证。
+更确切的说，**no-cache应该是do-not-serve-from-cache-without-revalidation,no-store才是真正的不进行缓存**.
+
+- only-if-cached
+表明客户端只接受已缓存的响应，并且不要向原始服务器检查是否有更新的拷贝.若发生请求缓存服务器的本地缓存无响应，则返回状态码504 Gateway Timeout.
+
+- max-age=<seconds>
+设置缓存存储的最大周期，超过这个时间缓存被认为过期(单位秒)。
+
+当客户端发送的请求中包含max-age指令时，如果判定缓存资源的缓存时间数值比指定时间的数值更小，那么客户端就接收缓存的资源。另外，当指定max-age值为0，那么缓存服务器通常需要将请求转发给源服务器.
+当服务器返回的响应中包含max-age指令时，缓存服务器将不对资源的有效性再作确认，而max-age数值代表资源保存为缓存的最长时间.
+
+- s-maxage=<seconds>
+覆盖max-age 或者 Expires 头，但是**仅适用于共享缓存(比如各个代理)**，并且私有缓存中它被忽略。
+
+- max-stale[=<seconds>]
+表明客户端愿意接收一个已经过期的资源。 可选的设置一个时间(单位秒)，表示响应不能超过的过时时间。
+如果指令**未指定参数值，那么无论经过多久，客户端都会接收**响应；如果指令中**指定了具体数值**，那么**即使过期，只要仍处于max-stale指定的时间内，仍旧会被客户端接收**。
+
+- min-fresh=<seconds>
+min-fresh指令要求缓存服务器返回至少还未过指定时间的缓存资源。
+比如，当指定min-fresh为60秒后，过了60秒的资源都无法作为响应返回了。
+
+- must-revalidate
+缓存必须在使用之前验证旧资源的状态，并且不可使用过期资源。
+
+- proxy-revalidate
+与must-revalidate作用相同，但它仅适用于共享缓存（例如代理），并被私有缓存忽略。
+
+- no-store
+缓存不应存储有关客户端请求或服务器响应的任何内容。
+
+- no-transform
+不得对资源进行转换或转变。Content-Encoding, Content-Range, Content-Type等HTTP头不能由代理修改。
+例如，非透明代理可以对图像格式进行转换，以便节省缓存空间或者减少缓慢链路上的流量。 no-transform指令不允许这样做。
+
+
+
+2. Pragma
+Pragma是HTTP/1.1之前版本的历史遗留字段，仅作为与HTTP/1.0的向后兼容而定义，规范定义的形式唯一，如：Pragma: no-cache
+
+
+
+
+
+
+
+
 # 4 实体的主体部分
 实体的主体是HTTP报文的负荷，就是HTTP要传输的内容。
 
@@ -182,10 +365,6 @@ CONNECT方法要求在与代理服务器通信时建立隧道，实现用隧道�
 503 (服务不可用) 服务器目前无法使用(由于超载或停机维护)。 通常，这只是暂时状态。
 504 (网关超时) 服务器作为网关或代理，但是没有及时从上游服务器收到请求。
 505 (HTTP 版本不受支持) 服务器不支持请求中所用的 HTTP 协议版本。
-
-
-
-
 
 
 
