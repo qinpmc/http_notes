@@ -394,6 +394,175 @@ If-Range: Wed, 21 Oct 2015 07:28:00 GMT
 
 7. If-Unmodified-Since
 
+首部字段If-Unmodified-Since和首部字段If-Modified-Since的作用相反。      
+它的作用的是告知服务器，指定的请求资源只有在字段值内指定的日期时间之后，**未发生更新的情况下，才能处理请求**。      
+如果在指定日期时间后发生了更新，则以状态码412 Precondition Failed作为响应返回。    
+
+If-Unmodified-Since: Wed, 21 Oct 2015 07:28:00 GMT         
+
+
+### 3.2.2 安全请求首部
+ 
+1. Authorization
+HTTP 提供一个用于权限控制和认证的通用框架。**最常用的HTTP认证方案是HTTP Basic authentication**。
+![HTTPAuth](./HTTPAuth.png)
+
+- a) 客户端向服务器发送请求
+- b) 服务器可以用来针对客户端的请求发送 challenge （质询信息） 服务器端向客户端返回 401（Unauthorized，未被授权的） 状态码，
+并在  WWW-Authenticate 首部提供如何进行验证的信息，其中至少包含有一种质询方式。
+- c) 有意向证明自己身份的客户端可以在新的请求中添加 Authorization 首部字段进行验证，字段值为身份验证凭证信息。通常客户端会弹出一个密码框让用户填写，然后发送包含有恰当的 Authorization  首部的请求。
+- d) 服务器对客户端发送的身份验证信息进行验证，如果验证失败，返回403 Forbidden，成功则返回200 OK。
+
+**代理认证**
+
+与上述同样的询问质疑和响应原理使用于代理认证。 资源认证和代理认证可以并存，需要一组不同的头信息和响应状态码。
+对于代理认证，询问质疑的状态码是 407（必须提供代理证书），响应头Proxy-Authenticate至少包含一个针对代理的质询，并且请求头Proxy-Authorization用作提供证书给代理服务器
+ 
+
+2. Cookie
+
+Cookie 是一个请求首部，其中含有先前由服务器通过 Set-Cookie  首部投放并存储到客户端的 HTTP cookies。
+这个首部可能会被完全移除，例如在浏览器的隐私设置里面设置为禁用cookie。
+
+Cookie: PHPSESSID=298zf09hf012fh2; csrftoken=u32t4o3tb3gg43; _gat=1;
+
+3. Cookie2
+
+废弃。Cookie2 请求首部曾经被用来告知浏览器该用户代理支持“新型” cookies.
+
+
+
+### 3.2.3 代理请求首部
+
+1. Max-Forwards
+
+
+通过TRACE方法或OPTIONS方法，发送包含首部字段Max-Forwards的请求时，该字段以十进制整数形式指定可经过的服务器最大数目。
+服务器在往下一个服务器转发请求之前，Max-Forwards的值减1后重新赋值。当服务器接收到Max-Forwards值为0的请求时，则不再进行转发，而是直接返回响应。
+Max-Forwards: 10
+
+
+2. Proxy-Authorization
+
+
+接收到从代理服务器发来的认证质询时，客户端会发送包含首部字段Proxy-Authorization的请求，以告知代理服务器认证所需要的信息。     
+这个行为是与客户端和服务器之间的HTTP访问认证相类似的，不同之处在于，认证行为发生在客户端与代理之间。 
+Proxy-Authorization: Basic dGlwOjkpNLAGfFY5
+
+
+3. Proxy-Connection
+Netscape的浏览器及代理实现者们提出了一个对盲中继问题的变通做法，这种做法并不要求所有的Web应用程序支持高版本的HTTP。
+这种变通做法引入了一个名为Proxy-Connection的新首部，解决了在客户端后面紧跟着一个盲中继所带来的问题——但并没有解决所有其他情况下存在的问题。
+在显式配置了代理的情况下，现代浏览器都实现了Proxy-Connection，很多代理都能够理解它。 
+Proxy-Connection:Keep-alive
+
+
+## 3.3 响应首部
+
+1. Age
+
+Age 消息头里包含消息对象在缓存代理中存贮的时长，以秒为单位。
+
+Age消息头的值通常接近于0。表示此消息对象刚刚从原始服务器获取不久。
+否则，其值则是表示代理服务器当前的系统时间与此应答消息中的通用消息头 Date 的值之差。
+
+2. Retry-After
+
+
+在HTTP协议中，响应首部 Retry-After 表示用户代理需要等待多长时间之后才能继续发送请求。这个首部主要应用于以下两种场景：
+
+- 当与 503 (Service Unavailable，当前服务不可用) 响应一起发送的时候，表示服务下线的预期时长。
+- 当与重定向响应一起发送的时候，比如 301 (Moved Permanently，永久迁移)，表示用户代理在发送重定向请求之前需要等待的最短时间。
+
+3. Server
+Server 首部包含了处理请求的**源服务器所用到的软件相关信息**。
+Server: Apache/2.4.1 (Unix)
+
+4. Warning
+该首部通常会告知用户一些与缓存相关的问题的警告.
+
+```
+码值	文字描述	               详细说明
+110	    Response is Stale	       由缓存服务器提供的响应已过期（设置的失效时间已过）。
+111	    Revalidation Failed	       由于无法访问服务器，响应验证失败。
+112	    Disconnected Operation	   缓存服务器断开连接。
+113	    Heuristic Expiration	   如果缓存服务器采用启发式方法，将缓存的有效时间设定为24小时，而在该响应的年龄超过24小时时发送。
+199	    Miscellaneous Warning	   任意的、未明确指定的警告信息。
+214	    Transformation Applied	   由代理服务器添加，如果它对返回的展现内容进行了任何转换，比如改变了内容编码、媒体类型等。
+299	    Miscellaneous Warning	   与199类似，只不过指代的是持久化警告。
+```
+
+## 3.3.1 协商首部
+
+1. Accept-Ranges
+
+TTP 响应头 Accept-Range 标识自身支持范围请求(partial requests)。字段的具体值用于定义范围请求的单位。
+
+Accept-Ranges: bytes
+Accept-Ranges: none
+
+
+2. Vary
+
+首部字段Vary决定了对于未来的一个请求头，应该用一个缓存的回复(response),还是向源服务器请求一个新的回复。
+
+从代理服务器接收到源服务器返回包含Vary指定项的响应之后，若再要进行缓存，仅对请求中含有相同Vary指定首部字段的请求返回缓存。   
+即使对相同资源发起请求，但由于Vary指定的首部字段不相同，因此必须要从源服务器重新获取资源.    
+
+![HTTP_vary](./HTTP_vary.png)
+
+
+
+## 3.3.2 安全响应首部
+
+1. Proxy-Authenticate
+首部字段Proxy-Authenticate会把由代理服务器所要求的认证信息发送给客户端。它与客户端和服务器之间的HTTP访问认证的行为相似，不同之处在于其认证行为是在客户端与代理之间进行的。
+客户端与服务器之间进行认证时，首部字段WWW-Authorization有着相同的作用.
+Proxy-Authenticate: Basic realm="Usagidesign Auth"
+
+
+2. Set-Cookie
+
+属性 　　　　　　　　　　说明
+NAME=VALUE 　　　　　　 赋予Cookie的名称和其值(必需项)
+expires=DATE    　　　 Cookie的有效期(若不明确指定则默认为浏览器 关闭前为止)
+path=PATH 　　　　　　  将服务器上的文件目录作为Cookie的适用对象(若不指定则默认为文档所在的文件目录)
+domain=域名 　　　　　　作为Cookie适用对象的域名(若不指定则默认为 创建Cookie的服务器的域名)
+Secure 　　　　　　　　 仅在HTTPS安全通信时才会发送Cookie
+HttpOnly 　　　　　　　加以限制，使Cookie不能被JavaScript脚本访问
+(expires)
+
+　　Cookie的expires属性指定浏览器可发送Cookie的有效期。当省略expires属性时，其有效期仅限于维持浏览器会话(Session)时间段内。这通常限于浏览器应用程序被关闭之前
+
+　　另外，一旦Cookie从服务器端发送至客户端，服务器端就不存在可以显式删除Cookie的方法。但可通过覆盖已过期的Cookie，实现对客户端Cookie的实质性删除操作
+
+(path)
+
+　　Cookie的path属性可用于限制指定Cookie的发送范围的文件目录。不过另有办法可避开这项限制，看来对其作为安全机制的效果不能抱有期待
+
+(domain)
+
+　　通过Cookie的domain属性指定的域名可做到与结尾匹配一致。比如，当指定example.com后，除example.com以外，www.example.com或www2.example.com等都可以发送Cookie
+
+　　因此，除了针对具体指定的多个域名发送Cookie之外，不指定domain属性显得更安全
+
+(secure)
+
+　　Cookie的secure属性用于限制Web页面仅在HTTPS安全连接时，才可以发送Cookie。发送Cookie时，指定secure属性的方法如下所示
+
+Set-Cookie: name=value; secure
+　　以上例子仅当在https://www.example.com/(HTTPS)安全连接的情况下才会进行Cookie的回收。也就是说，即使域名相同，http://www.example.com/(HTTP)也不会发生Cookie回收行为
+
+　　当省略secure属性时，不论HTTP还是HTTPS，都会对Cookie进行回收
+
+(HttpOnly)
+
+　　Cookie的HttpOnly属性是Cookie的扩展功能，它使JavaScript脚本无法获得Cookie。其主要目的为防止跨站脚本攻击(Cross-site scripting，XSS)对Cookie的信息窃取
+
+　　发送指定HttpOnly属性的Cookie的方法如下所示
+
+Set-Cookie: name=value; HttpOnly
+　　通过上述设置，通常从Web页面内还可以对Cookie进行读取操作。但使用JavaScript的document.cookie就无法读取附加HttpOnly属性后的Cookie的内容了。因此，也就无法在XSS中利用JavaScript劫持Cookie了
 
 
 # 4 实体的主体部分
@@ -674,3 +843,53 @@ Last-Modified与Etag类似。不过Last-Modified表示响应资源在服务器�
 ETag 实体标签一般为资源实体的哈希值。即ETag就是服务器生成的一个标记，用来标识返回值是否有变化。且Etag的优先级高于Last-Modified。
 
 ```
+
+
+```
+盲代理哑转发（Connection、Proxy-Connection）专题(HTTP权威指南-p100)
+
+互联网上，存在着大量简陋并过时的代理服务器在继续工作，它们很可能无法理解 Connection——无论是请求报文还是响应报文中的 Connection。
+而代理服务器在遇到不认识的 Header 时，往往都会选择继续转发。大部分情况下这样做是对的，很多使用 HTTP 协议的应用软件扩展了 HTTP 头部，如果代理不传输扩展字段，这些软件将无法工作。
+如果浏览器对这样的代理发送了 Connection: Keep-Alive，那么结果会变得很复杂。这个 Header 会被不理解它的代理原封不动的转给服务端，如果服务器也不能理解就还好，能理解就彻底杯具了。
+服务器并不知道 Keep-Alive 是由代理错误地转发而来，它会认为代理希望建立持久连接，服务端同意之后也返回一个 Keep-Alive。
+同样，响应中的 Keep-Alive 也会被代理原样返给浏览器，同时代理还会傻等服务器关闭连接——实际上，服务端已经按照 Keep-Alive 指示保持了连接，即使数据回传完成，也不会关闭连接。
+另一方面，浏览器收到 Keep-Alive 之后，会复用之前的连接发送剩下的请求，但代理不认为这个连接上还会有其他请求，请求被忽略。这样，浏览器会一直处于挂起状态，直到连接超时。
+ 
+针对以上情况，浏览器厂商和代理实现者协商了一个变通的方案：首先，显式给浏览器设置代理后，浏览器会把请求头中的 Connection 替换为 Proxy-Connetion。
+这样，对于老旧的代理，它不认识这个 Header，会继续发给服务器，服务器也不认识，代理和服务器之间不会建立持久连接（不能正确处理 Connection 的都是 HTTP/1.0 代理），
+服务器不返回 Keep-Alive，代理和浏览器之间也不会建立持久连接。
+而对于新代理，它可以理解 Proxy-Connetion，会用 Connection 取代无意义的 Proxy-Connection，并将其发送给服务器，以收到预期的效果。
+（只能解决具有一个代理的情况，HTTP权威指南-附录C Proxy-Connetion）
+
+ 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
