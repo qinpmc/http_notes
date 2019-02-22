@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c6924cbe-4489-4b4f-babd-33d1e31ac733" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch3HTTP报文/HTTPNegoServer1.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch3HTTP报文/HTTPNegoServer2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch3HTTP报文/connect.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/HTTP_connect.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/HTTP事务时延.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/TCP分组.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/串行连接.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/并行连接.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/持久化连接.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/管道化连接.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch4连接管理/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ch3HTTP报文/README.md" afterPath="$PROJECT_DIR$/ch3HTTP报文/README.md" />
     </list>
@@ -26,12 +33,25 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ch3HTTP报文/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor vertical-scroll-proportion="-4.8756347">
-                <caret line="750" column="40" selection-start-line="750" selection-start-column="40" selection-end-line="750" selection-end-column="40" />
+              <first_editor vertical-scroll-proportion="0.8413706">
+                <caret line="1160" column="0" selection-start-line="1160" selection-start-column="0" selection-end-line="1160" selection-end-column="0" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ch4连接管理/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor vertical-scroll-proportion="0.8784933">
+                <caret line="216" column="1" selection-start-line="216" selection-start-column="1" selection-end-line="216" selection-end-column="1" />
                 <folding />
               </first_editor>
               <second_editor />
@@ -51,6 +71,7 @@
         <option value="$PROJECT_DIR$/ch1 HTTP概述/README.md" />
         <option value="$PROJECT_DIR$/ch2 URL与资源/README.md" />
         <option value="$PROJECT_DIR$/ch3HTTP报文/README.md" />
+        <option value="$PROJECT_DIR$/ch4连接管理/README.md" />
       </list>
     </option>
   </component>
@@ -124,6 +145,34 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="http_notes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="http_notes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ch4连接管理" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="http_notes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="http_notes" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="ch3HTTP报文" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -135,6 +184,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\notes\http_notes\ch4连接管理" />
       <recent name="F:\notes\http_notes\ch3HTTP报文" />
     </key>
   </component>
@@ -189,6 +239,9 @@
     </configuration>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="c6924cbe-4489-4b4f-babd-33d1e31ac733" name="Default" comment="" />
@@ -238,6 +291,14 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USER_GROUPS">
+      <collection />
+    </option>
+    <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+      <collection />
+    </option>
+  </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
@@ -276,16 +337,6 @@
     <entry file="file://$PROJECT_DIR$/ch2 URL与资源/通用URL.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ch2 URL与资源/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor vertical-scroll-proportion="3.311057">
-            <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
-          </first_editor>
-          <second_editor />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -359,11 +410,33 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ch2 URL与资源/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.93924665">
+            <caret line="109" column="0" selection-start-line="109" selection-start-column="0" selection-end-line="109" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ch3HTTP报文/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor vertical-scroll-proportion="-4.8756347">
-            <caret line="750" column="40" selection-start-line="750" selection-start-column="40" selection-end-line="750" selection-end-column="40" />
+          <first_editor vertical-scroll-proportion="0.8413706">
+            <caret line="1160" column="0" selection-start-line="1160" selection-start-column="0" selection-end-line="1160" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ch4连接管理/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor vertical-scroll-proportion="0.8784933">
+            <caret line="216" column="1" selection-start-line="216" selection-start-column="1" selection-end-line="216" selection-end-column="1" />
             <folding />
           </first_editor>
           <second_editor />
