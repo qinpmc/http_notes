@@ -745,6 +745,13 @@ HTTP首部字段是可以自行扩展的。所以在Web服务器和浏览器的�
 # 5 方法
 ![方法](方法.png)
 
+幂等（Idempotent）：一个HTTP方法是幂等的，指的是同样的请求被执行一次与连续执行多次的效果是一样的，服务器的状态也是一样的。
+换句话说就是，幂等方法不应该具有副作用（统计用途除外）。在正确实现的条件下，GET，HEAD，PUT和DELETE 等方法都是幂等的，而 POST 方法不是。所有的 safe 方法也都是幂等的
+
+- GET、HEAD、PUT、DELETE、OPTIONS、TRACE是幂等的；
+- POST、PATCH 非幂等；
+
+
 ## 5.1 GET
 GET是最常用的方法。通常用于请求服务器发送某个资源.
 
@@ -840,14 +847,6 @@ Content-Length: 100
 [description of changes]
 ```
 
-
-
-
-
-GET，HEAD，PUT和DELETE方法都有这样的幂等属性，同样由于根据协议，OPTIONS，TRACE都不应有副作用，因此也理所当然也是幂等的
-
-
-POST方法/PATCH 非幂等
 
 
 
@@ -1035,22 +1034,95 @@ ETag 实体标签一般为资源实体的哈希值。即ETag就是服务器生�
 而对于新代理，它可以理解 Proxy-Connetion，会用 Connection 取代无意义的 Proxy-Connection，并将其发送给服务器，以收到预期的效果。
 （只能解决具有一个代理的情况，HTTP权威指南-附录C Proxy-Connetion）
 
- 
 ```
 
 
 
+HTTP content negotiation 内容协商（https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Content_negotiation）
+                ------ Vary、Accept、Content-Loacation等首部使用
+
+内容协商机制： 通过为同一 URI 指向的资源提供不同的展现形式，可以使用户代理选择与用户需求相适应的最佳匹配（例如，文档使用的自然语言，图片的格式，或者内容编码形式）
+
+1. 内容协商的基本原则
+一份特定的文件称为一项资源。当客户端获取资源的时候，会使用其对应的 URL 发送请求。
+服务器通过这个 URL 来选择它指向的资源的某一变体（每一个变体称为一种展现形式），然后将这个选定的展现形式返回给客户端。
+整个资源，连同它的各种展现形式， 共享一个特定的 URL 。当一项资源被访问的时候，特定展现形式的选取是通过内容协商机制来决定的，并且客户端和服务器端之间存在多种协商方式。
+
+最佳展现形式的选取可以通过两种机制实现：
+- 客户端设置特定的 HTTP 首部 （又称为服务端驱动型内容协商机制或者主动协商机制）；这是进行内容协商的标准方式；
+- 服务器返回 300 (Multiple Choices) 或者 406 (Not Acceptable) HTTP 状态码 （又称为代理驱动型协商机制或者响应式协商机制）；这种方式一般用作备选方案。
+
+2. 服务端驱动型内容协商机制
+
+![HTTPNegoServer1](./HTTPNegoServer1.png)
+注意 图上响应头中 Content-Location 。
+在服务端驱动型协商机制或者主动协商机制中，浏览器（或者其他任何类型的用户代理）会随同 URL 发送一系列的消息头。
+这些消息头描述了用户倾向的选择。服务器则以此为线索，通过内部算法来选择最佳方案提供给客户端。
 
 
+HTTP/1.1 规范指定了一系列的标准消息头用于启动服务端驱动型内容协商 **（Accept、Accept-Charset、 Accept-Encoding、Accept-Language）**。
+尽管严格来说  **User-Agent** 并不在此列，有时候它还是会被用来确定给客户端发送的所请求资源的特定展现形式，不过这种做法不提倡使用。
+服务器会使用  **Vary 消息头来说明实际上哪些消息头被用作内容协商的参考依据**（确切来说是与之相关的响应消息头），这样可以使缓存的运作更有效。
+
+协商使用的头部有：
+1） Accept
+Accept 首部列举了用户代理希望接收的媒体资源的 MIME 类型。同时每一种 MIME 类型会配有一个品质因数（quality factor），该参数明确了不同 MIME 类型之间的相对优先级。
+Accept: text/html, application/xhtml+xml, application/xml;q=0.9, */*;q=0.8
+
+2）Accept-Charset 首部
+Accept-Charset首部用于告知服务器该客户代理可以理解何种形式的字符编码。
+Accept-Charset：ISO-8859-1,utf-8;q=0.7,*;q=0.7
+
+3） Accept-Encoding 首部
+Accept-Encoding 首部明确说明了（接收端）可以接受的内容编码形式（所支持的压缩算法）。该首部的值是一个Q因子清单（例如 br, gzip;q=0.8），用来提示不同编码类型值的优先级顺序。
+
+4）Accept-Language 首部
+Accept-Language 首部用来提示用户期望获得的自然语言的优先顺序。该首部的值是一个Q因子清单（例如 "de, en;q=0.7"）。
+
+5） User-Agent 首部
+User-Agent 首部可以用来识别发送请求的浏览器。
+
+示例：
+
+a) 使用chrome 浏览器访问一个资源，然后缓存该资源，如下：
+
+    GET /path/big.json HTTP/1.1
+    Host: app.kolich.local
+    User-Agent: Firefox
+
+    HTTP/1.0 200 OK
+    Date: Fri, 24 Sep 2010 23:09:32 GMT
+    Content-Type: application/json;charset=UTF-8
+    Content-Language: en-US
+    Vary: Accept-Encoding,User-Agent
+    Age: 1235
+    X-Cache: HIT from cache.kolich.local
+    X-Cache-Lookup: HIT from cache.kolich.local:80
+    Content-Length: 25090
+    Connection: close
+
+b) 再次访问该资源（资源地址一致，但使用firefox浏览器）
+
+    GET /path/big.json HTTP/1.1
+    Host: app.kolich.local
+    User-Agent: Chrome
+
+    HTTP/1.0 200 OK
+    Date: Fri, 24 Sep 2010 23:11:45 GMT
+    Content-Type: application/json;charset=UTF-8
+    Content-Language: en-US
+    Vary: Accept-Encoding,User-Agent
+    Age: 4
+    X-Cache: MISS from cache.kolich.local
+    X-Cache-Lookup: MISS from cache.kolich.local:80
+    Content-Length: 25090
+    Connection: close
+
+以上并未获取到已缓存的结果，原因在于 Vary响应头中 使用了User-Agent，说明服务器会根据不同的浏览器代理返回不同的结果，因此第二次请求并未从缓存获取结果，而是从服务器再次返回结果。
 
 
-
-
-
-
-
-
-
+3. 代理驱动型内容协商机制
+![HTTPNegoServer2](./HTTPNegoServer2.png)
 
 
 

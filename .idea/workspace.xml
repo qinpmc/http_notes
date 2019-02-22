@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c6924cbe-4489-4b4f-babd-33d1e31ac733" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch3HTTP报文/HTTPNegoServer1.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch3HTTP报文/HTTPNegoServer2.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ch3HTTP报文/README.md" afterPath="$PROJECT_DIR$/ch3HTTP报文/README.md" />
     </list>
     <ignored path="http_notes.iws" />
@@ -28,19 +30,12 @@
         <entry file="file://$PROJECT_DIR$/ch3HTTP报文/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor vertical-scroll-proportion="-1.3489847">
-                <caret line="734" column="0" selection-start-line="734" selection-start-column="0" selection-end-line="734" selection-end-column="0" />
+              <first_editor vertical-scroll-proportion="-4.8756347">
+                <caret line="750" column="40" selection-start-line="750" selection-start-column="40" selection-end-line="750" selection-end-column="40" />
                 <folding />
               </first_editor>
               <second_editor />
             </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HTTP_vary.png" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ch3HTTP报文/HTTP_vary.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
           </provider>
         </entry>
       </file>
@@ -129,20 +124,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="http_notes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="http_notes" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ch3HTTP报文" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -151,6 +132,11 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="D:\Program Files\nodejs\node.exe" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="F:\notes\http_notes\ch3HTTP报文" />
+    </key>
   </component>
   <component name="RunManager">
     <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
@@ -368,11 +354,16 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ch3HTTP报文/HTTPNegoServer1.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ch3HTTP报文/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor vertical-scroll-proportion="-1.3489847">
-            <caret line="734" column="0" selection-start-line="734" selection-start-column="0" selection-end-line="734" selection-end-column="0" />
+          <first_editor vertical-scroll-proportion="-4.8756347">
+            <caret line="750" column="40" selection-start-line="750" selection-start-column="40" selection-end-line="750" selection-end-column="40" />
             <folding />
           </first_editor>
           <second_editor />
