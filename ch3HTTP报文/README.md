@@ -468,7 +468,6 @@ Age消息头的值通常接近于0。表示此消息对象刚刚从原始服务�
 
 2. Retry-After
 
-
 在HTTP协议中，响应首部 Retry-After 表示用户代理需要等待多长时间之后才能继续发送请求。这个首部主要应用于以下两种场景：
 
 - 当与 503 (Service Unavailable，当前服务不可用) 响应一起发送的时候，表示服务下线的预期时长。
@@ -492,7 +491,7 @@ Server: Apache/2.4.1 (Unix)
 299	    Miscellaneous Warning	   与199类似，只不过指代的是持久化警告。
 ```
 
-## 3.3.1 协商首部
+### 3.3.1 协商首部
 
 1. Accept-Ranges
 
@@ -504,7 +503,7 @@ Accept-Ranges: none
 
 2. Vary
 
-首部字段Vary决定了对于未来的一个请求头，应该用一个缓存的回复(response),还是向源服务器请求一个新的回复。
+响应首部字段Vary决定了对于未来的一个请求头，应该用一个缓存的回复(response),还是向源服务器请求一个新的回复。
 
 从代理服务器接收到源服务器返回包含Vary指定项的响应之后，若再要进行缓存，仅对请求中含有相同Vary指定首部字段的请求返回缓存。   
 即使对相同资源发起请求，但由于Vary指定的首部字段不相同，因此必须要从源服务器重新获取资源.    
@@ -513,7 +512,7 @@ Accept-Ranges: none
 
 
 
-## 3.3.2 安全响应首部
+### 3.3.2 安全响应首部
 
 1. Proxy-Authenticate
 首部字段Proxy-Authenticate会把由代理服务器所要求的认证信息发送给客户端。它与客户端和服务器之间的HTTP访问认证的行为相似，不同之处在于其认证行为是在客户端与代理之间进行的。
@@ -523,48 +522,221 @@ Proxy-Authenticate: Basic realm="Usagidesign Auth"
 
 2. Set-Cookie
 
-属性 　　　　　　　　　　说明
+```
+属性 　　　　　　　　　 说明
 NAME=VALUE 　　　　　　 赋予Cookie的名称和其值(必需项)
-expires=DATE    　　　 Cookie的有效期(若不明确指定则默认为浏览器 关闭前为止)
+expires=DATE    　　　  Cookie的有效期(若不明确指定则默认为浏览器 关闭前为止),如 Wed, 21 Oct 2015 07:28:00 GMT
+Max-Age=non-zero-digit  在 cookie 失效之前需要经过的秒数。一位或多位非零（1-9）数字。Max-Age 优先级比expires高。
 path=PATH 　　　　　　  将服务器上的文件目录作为Cookie的适用对象(若不指定则默认为文档所在的文件目录)
 domain=域名 　　　　　　作为Cookie适用对象的域名(若不指定则默认为 创建Cookie的服务器的域名)
 Secure 　　　　　　　　 仅在HTTPS安全通信时才会发送Cookie
-HttpOnly 　　　　　　　加以限制，使Cookie不能被JavaScript脚本访问
-(expires)
+HttpOnly 　　　　　　　 加以限制，使Cookie不能被JavaScript脚本访问
 
-　　Cookie的expires属性指定浏览器可发送Cookie的有效期。当省略expires属性时，其有效期仅限于维持浏览器会话(Session)时间段内。这通常限于浏览器应用程序被关闭之前
+```
+- expires :
+expires属性指定浏览器可发送Cookie的有效期。当省略expires属性时，其有效期仅限于维持浏览器会话(Session)时间段内，这通常限于浏览器应用程序被关闭之前。
+另外，一旦Cookie从服务器端发送至客户端，服务器端就不存在可以显式删除Cookie的方法。但可通过覆盖已过期的Cookie，实现对客户端Cookie的实质性删除操作。
 
-　　另外，一旦Cookie从服务器端发送至客户端，服务器端就不存在可以显式删除Cookie的方法。但可通过覆盖已过期的Cookie，实现对客户端Cookie的实质性删除操作
+- Max-Age=<non-zero-digit>：
+在 cookie 失效之前需要经过的秒数。一位或多位非零（1-9）数字。
+一些老的浏览器（ie6、ie7 和 ie8）不支持这个属性。对于其他浏览器来说，假如二者 （指 Expires 和Max-Age） 均存在，那么 Max-Age 优先级更高。
 
-(path)
 
-　　Cookie的path属性可用于限制指定Cookie的发送范围的文件目录。不过另有办法可避开这项限制，看来对其作为安全机制的效果不能抱有期待
+-path ：
+指定一个 URL 路径，这个路径必须出现在要请求的资源的路径中才可以发送 Cookie 首部。
+字符 %x2F ("/") 可以解释为文件目录分隔符，此目录的**下级目录也满足匹配**的条件（例如，如果 path=/docs，那么 "/docs", "/docs/Web/" 或者 "/docs/Web/HTTP" 都满足匹配的条件）
 
-(domain)
+-domain ：
+指定 cookie 可以送达的主机名。
+假如没有指定，那么**默认值为当前文档访问地址中的主机**部分（但是**不包含子域名**）。
+与之前的规范不同的是，域名之前的点号会被忽略。假如**指定了域名，那么相当于各个子域名也包含在内**。
+比如，当指定Domain=example.com后，除example.com以外，www.example.com或www2.example.com等都可以发送Cookie
 
-　　通过Cookie的domain属性指定的域名可做到与结尾匹配一致。比如，当指定example.com后，除example.com以外，www.example.com或www2.example.com等都可以发送Cookie
-
-　　因此，除了针对具体指定的多个域名发送Cookie之外，不指定domain属性显得更安全
-
-(secure)
-
-　　Cookie的secure属性用于限制Web页面仅在HTTPS安全连接时，才可以发送Cookie。发送Cookie时，指定secure属性的方法如下所示
-
+- secure ：
+Cookie的secure属性用于限制Web页面仅在HTTPS安全连接时，才可以发送Cookie。发送Cookie时，指定secure属性的方法如下所示：
 Set-Cookie: name=value; secure
-　　以上例子仅当在https://www.example.com/(HTTPS)安全连接的情况下才会进行Cookie的回收。也就是说，即使域名相同，http://www.example.com/(HTTP)也不会发生Cookie回收行为
+以上例子仅当在https://www.example.com/(HTTPS)安全连接的情况下才会进行Cookie的回收。也就是说，即使域名相同，http://www.example.com/(HTTP)也不会发生Cookie回收行为
+当省略secure属性时，不论HTTP还是HTTPS，都会对Cookie进行回收。
+从 Chrome 52 和 Firefox 52 开始，不安全的站点（http:）无法使用Cookie的 Secure 标记。
 
-　　当省略secure属性时，不论HTTP还是HTTPS，都会对Cookie进行回收
-
-(HttpOnly)
-
-　　Cookie的HttpOnly属性是Cookie的扩展功能，它使JavaScript脚本无法获得Cookie。其主要目的为防止跨站脚本攻击(Cross-site scripting，XSS)对Cookie的信息窃取
-
-　　发送指定HttpOnly属性的Cookie的方法如下所示
-
+- HttpOnly ：
+HttpOnly属性是Cookie的扩展功能，它使JavaScript脚本无法获得Cookie。其主要目的为防止跨站脚本攻击(Cross-site scripting，XSS)对Cookie的信息窃取。
+发送指定HttpOnly属性的Cookie的方法如下所示：
 Set-Cookie: name=value; HttpOnly
-　　通过上述设置，通常从Web页面内还可以对Cookie进行读取操作。但使用JavaScript的document.cookie就无法读取附加HttpOnly属性后的Cookie的内容了。因此，也就无法在XSS中利用JavaScript劫持Cookie了
+通过上述设置，通常从Web页面内还可以对Cookie进行读取操作。但使用JavaScript的document.cookie就无法读取附加HttpOnly属性后的Cookie的内容了。因此，也就无法在XSS中利用JavaScript劫持Cookie了。
 
 
+- 会话期 cookie / 持久化 cookie
+会话期 cookies 将会在客户端关闭时被移除。 **会话期 cookie 不设置 Expires 或 Max-Age 指令**。注意浏览器通常支持会话恢复功能。
+Set-Cookie: sessionid=38afes7a8; HttpOnly; Path=/
+
+***持久化 Cookie 不会在客户端关闭时失效，而是在特定的日期（Expires）或者经过一段特定的时间之后（Max-Age）才会失效**。
+Set-Cookie: id=a3fWa; Expires=Wed, 21 Oct 2015 07:28:00 GMT; Secure; HttpOnly
+
+
+3. Set-Cookie2
+响应首部，已废弃使用。使用 Set-Cookie 代替。
+
+4. WWW-Authenticate
+WWW-Authenticate **响应头**定义了使用何种验证方式去获取对资源的连接。
+WWW-Authenticate header通常会和一个 401 Unauthorized 的响应一同被发送.
+
+
+## 3.4 实体首部
+
+1. Allow
+
+首部字段Allow用于通知客户端能够支持Request-URI指定资源的所有HTTP方法。
+Allow: GET, HEAD
+
+2. Location
+Location 首部指定的是需要将页面重新定向至的地址。一般在响应码为3xx的响应中才会有意义。
+- 303 (See Also) 始终引致请求使用 GET 方法，而，而 307 (Temporary Redirect) 和 308 (Permanent Redirect) 则不转变初始请求中的所使用的方法；
+- 301 (Permanent Redirect) 和 302 (Found) 在大多数情况下不会转变初始请求中的方法，不过一些比较早的用户代理可能会引发方法的变更（所以你基本上不知道这一点）。
+状态码为上述之一的所有响应**都会带有一个Location首部**。除了重定向响应之外， 状态码为 201 (Created) 的消息也会带有Location首部。它指向的是新创建的资源的地址。
+
+**Location 与 Content-Location**：
+
+Location 与 Content-Location是不同的，前者（Location ）指定的是一个重定向请求的目的地址（或者新创建的文件的URL），
+而后者（ Content-Location） 指向的是经过内容协商后的资源的直接地址，不需要进行进一步的内容协商。Location 对应的是响应，而Content-Location对应的是要返回的实体。
+
+Location: http://www.usagidesign.jp/sample.html
+
+## 3.4.1  内容首部
+
+1. Content-Encoding
+Content-Encoding响应头会告知客户端,服务器对实体的主体部分选用的内容编码方式。内容编码是指在不丢失实体信息的前提下所进行的压缩.
+客户端指定接收的压缩格式： Accept-Encoding: gzip, deflate
+服务端返回的内容的压缩格式: Content-Encoding: gzip
+
+2. Content-Language
+实体主体使用的自然语言.
+Content-Language: zh-CN
+
+
+3. Content-Length
+Content-Length表明了实体主体部分的大小(单位是字节)
+
+4. Content-Location
+Content-Location 首部指定的是要返回的数据的地址选项。最主要的用途是用来指定要访问的资源经过**内容协商后的结果的URL**。
+Location 与 Content-Location是不同的，前者（Location ）指定的是一个重定向请求的目的地址（或者新创建的文件的URL），
+而后者（ Content-Location） 指向的是可供访问的资源的直接地址，不需要进行进一步的内容协商。
+Location是与响应关联的头，而内容位置则与返回的数据关联
+
+```
+Requesting data from a server in different formats
+
+假设一个站点的API可以返回JSON、XML或CSV格式的数据。如果特定文档的URL位于https://example.com/document s/foo，则该站点可以根据请求的接受头返回不同的内容位置URL。
+Request header	                                 Response header
+Accept: application/json, text/json	             Content-Location: /documents/foo.json
+Accept: application/xml, text/xml	             Content-Location: /documents/foo.xml
+Accept: text/plain, text/*	                     Content-Location: /documents/foo.txt
+
+这些URL就是例子-该站点可以为不同的文件类型提供它想要的任何URL模式，例如查询字符串参数：/documents/foo？格式=json，/documents/foo？格式=XML，依此类推。
+然后，客户端可以记住JSON版本在特定的URL上可用，在下次请求该文档时跳过内容协商
+
+
+Pointing to a new document (HTTP 201 Created)
+
+创建一篇博客，然后提交，请求头为：
+
+PUT /new/post
+Host: example.com
+Content-Type: text/markdown
+
+# My first blog post!
+
+I made this through `example.com`'s API. I hope it worked.
+
+网站返回一个确认博客提交成功的通用信息，并利用Content-Location指定新博客的地址（响应头）：
+
+HTTP/1.1 201 Created
+Content-Type: text/plain; charset=utf-8
+Content-Location: /my-first-blog-post
+
+✅ Success!
+```
+
+5. Content-MD5
+
+首部字段Content-MD5是一串由MD5算法生成的值，其目的在于**检查报文主体在传输过程中是否保持完整，以及确认传输到达**.
+对报文主体执行MD5算法获得的128位二进制数，再通过Base64编码后将结果写入Content-MD5字段值。由于HTTP首部无法记录二进制值，所以要通过Base64编码处理。
+为确保报文的有效性，作为接收方的客户端会对报文主体再执行一次相同的MD5算法。计算出的值与字段值作比较后，即可判断出报文主体的准确性
+
+6. Content-Range
+
+响应首部 Content-Range 显示的是一个数据片段在整个文件中的位置。
+Content-Range: bytes 200-1000/67589
+
+7. Content-Type
+Content-Type 实体头部用于指示资源的MIME类型 media type 。
+Content-Type: text/html; charset=utf-8
+Content-Type: multipart/form-data; boundary=something
+
+再比如，html 的form表单进行POST提交（表单的 enctype="multipart/form-data" ）：
+POST /foo HTTP/1.1
+Content-Length: 68137
+Content-Type: multipart/form-data; boundary=---------------------------974767299852498929531610575
+
+---------------------------974767299852498929531610575
+Content-Disposition: form-data; name="description"
+
+some text
+---------------------------974767299852498929531610575
+Content-Disposition: form-data; name="myFile"; filename="foo.txt"
+Content-Type: text/plain
+
+(content of the uploaded file foo.txt)
+---------------------------974767299852498929531610575
+
+## 3.4.2 实体缓存首部
+1. Etag
+ETagHTTP响应头是资源的特定版本的标识符。这可以让缓存更高效，并节省带宽，因为如果内容没有改变，Web服务器不需要发送完整的响应。
+而如果内容发生了变化，使用ETag有助于防止资源的同时更新相互覆盖（“空中碰撞”）。
+ETag中有强ETag值和弱ETag值之分:
+- 强ETag值——不论实体发生多么细微的变化都会改变其值,ETag: "usagi-1234"
+- 弱ETag值只用于提示资源是否相同。相同资源的两个弱Etag值可能语义等同，但不是每个字节都相同。这时，会在字段值最开始处附加W(大小写敏感)/, ETag: W/"usagi-1234"
+
+示例： 避免“空中碰撞”
+在ETag和 If-Match 头部的帮助下，可以检测到"空中碰撞"的编辑冲突。
+
+a) 例如，当编辑MDN时，当前的wiki内容被散列，并在响应中放入Etag：ETag: "33a64df551425fcc55e4d42a148795d9f25f89d4
+b) 将更改保存到Wiki页面（发布数据）时，POST请求将包含有ETag值的If-Match头来检查是否为最新版本。If-Match: "33a64df551425fcc55e4d42a148795d9f25f89d4"
+c) 如果哈希值不匹配，则意味着文档已经被编辑，抛出412(Precondition Failed )前提条件失败错误。
+
+
+
+示例： 缓存未更改的资源
+ETag头的另一个典型用例是缓存未更改的资源。 如果用户**再次**访问给定的URL（设有ETag字段），资源已不新鲜，并认为因为太老了而不可用，
+客户端就发送值为ETag的If-None-Match  字段：If-None-Match: "33a64df551425fcc55e4d42a148795d9f25f89d4"
+服务器将客户端的ETag（作为If-None-Match字段的值一起发送）与其当前版本的资源的ETag进行比较，
+如果两个值匹配（即资源未更改），服务器将返回不带任何内容的304未修改状态，告诉客户端缓存版本可用（新鲜）。
+
+
+2. Expires
+Expires会将资源失效的日期告知客户端。缓存服务器在接收到含有首部字段Expires的响应后，会以缓存来应答请求，在Expires字段值指定的时间之前，响应的副本会一直被保存。
+当超过指定的时间后，缓存服务器在请求发送过来时，会转向源服务器请求资源。
+Expires: Wed, 04 Jul 2012 08:26:05 GMT
+如果在Cache-Control响应头**设置了 "max-age" 或者 "s-max-age" 指令，那么 Expires 头会被忽略**。
+
+
+3. Last-Modified
+Last-Modified为源头服务器认定的资源做出修改的日期及时间。 它通常被用作一个验证器来判断接收到的或者存储的资源是否彼此一致。
+由于精确度比  ETag 要低，所以这是一个备用机制。包含有  If-Modified-Since 或 If-Unmodified-Since 首部的条件请求会使用这个字段。
+Last-Modified: Wed, 21 Oct 2015 07:28:00 GMT
+
+
+## 3.5 扩展首部
+HTTP首部字段是可以自行扩展的。所以在Web服务器和浏览器的应用上，会出现各种非标准的首部字段。
+如：首部字段X-XSS-Protection属于HTTP响应首部，它是针对跨站脚本攻击(XSS)的一种对策，用于控制浏览器XSS防护机制的开关。
+- 0:将 XSS 过滤设置成无效状态
+- 1:将 XSS 过滤设置成有效状态
+
+
+如：首部字段DNT属于HTTP请求首部，其中DNT是 Do Not Track的简称，意为拒绝。
+个人信息被收集，是表示拒绝被精准广告追踪的一种方法。
+- 0:同意被追踪
+- 1:拒绝被追踪
 
 
 # 4 实体的主体部分
