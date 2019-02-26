@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c6924cbe-4489-4b4f-babd-33d1e31ac733" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch7 缓存/文档过期.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch7 缓存/缓存处理步骤.jpg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch7 缓存/缓存层次.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_gateway1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_gateway2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_gateway3.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_gateway4.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_tunnel1.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_tunnel2.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ch8 网关、隧道及中继/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ch7 缓存/README.md" afterPath="$PROJECT_DIR$/ch7 缓存/README.md" />
     </list>
     <ignored path="http_notes.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,16 +28,36 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ch7 缓存/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="FIRST">
-              <first_editor relative-caret-position="682">
-                <caret line="169" column="0" lean-forward="true" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
+              <first_editor relative-caret-position="-44">
+                <caret line="169" column="0" lean-forward="false" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
                 <folding />
               </first_editor>
               <second_editor />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ch8 网关、隧道及中继/README.md">
+          <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+            <state split_layout="FIRST">
+              <first_editor relative-caret-position="2552">
+                <caret line="116" column="55" lean-forward="false" selection-start-line="116" selection-start-column="55" selection-end-line="116" selection-end-column="55" />
+                <folding />
+              </first_editor>
+              <second_editor />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HTTP_gateway3.jpg" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_gateway3.jpg">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -72,6 +95,7 @@
         <option value="$PROJECT_DIR$/ch7 缓存/cookie/server.js" />
         <option value="$PROJECT_DIR$/ch7 缓存/cookie/server2.js" />
         <option value="$PROJECT_DIR$/ch7 缓存/README.md" />
+        <option value="$PROJECT_DIR$/ch8 网关、隧道及中继/README.md" />
       </list>
     </option>
   </component>
@@ -106,6 +130,7 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -116,18 +141,12 @@
             <path>
               <item name="http_notes" type="b2602c69:ProjectViewProjectNode" />
               <item name="http_notes" type="462c0819:PsiDirectoryNode" />
-              <item name="ch3 HTTP报文" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="http_notes" type="b2602c69:ProjectViewProjectNode" />
-              <item name="http_notes" type="462c0819:PsiDirectoryNode" />
-              <item name="ch7 缓存" type="462c0819:PsiDirectoryNode" />
+              <item name="ch8 网关、隧道及中继" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -140,11 +159,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="E:\qinpmc\note\http_notes\ch8 网关、隧道及中继" />
       <recent name="E:\qinpmc\note\http_notes\ch7 缓存" />
       <recent name="F:\notes\http_notes\ch7 缓存\cookie" />
       <recent name="F:\notes\http_notes\ch7 缓存" />
       <recent name="F:\notes\http_notes\ch6 代理" />
-      <recent name="F:\notes\http_notes\ch5 Web服务器" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -225,11 +244,12 @@
       <workItem from="1550842287147" duration="1173000" />
       <workItem from="1550843539663" duration="157000" />
       <workItem from="1551015977897" duration="1441000" />
+      <workItem from="1551181109950" duration="1694000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2771000" />
+    <option name="totallyTimeSpent" value="4465000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -290,11 +310,21 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/ch7 缓存/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="0">
+            <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ch7 缓存/cookie/server.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -313,7 +343,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -322,7 +351,6 @@
         <state split_layout="FIRST">
           <first_editor relative-caret-position="4004">
             <caret line="182" column="0" lean-forward="false" selection-start-line="182" selection-start-column="0" selection-end-line="182" selection-end-column="32" />
-            <folding />
           </first_editor>
           <second_editor />
         </state>
@@ -332,7 +360,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="5" column="7" lean-forward="false" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -340,7 +367,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -348,7 +374,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="5" column="29" lean-forward="false" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -356,7 +381,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -364,7 +388,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -372,7 +395,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="242">
           <caret line="11" column="52" lean-forward="false" selection-start-line="11" selection-start-column="52" selection-end-line="11" selection-end-column="52" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -526,7 +548,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -534,7 +555,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
           <caret line="6" column="24" lean-forward="false" selection-start-line="6" selection-start-column="24" selection-end-line="6" selection-end-column="24" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -542,7 +562,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -550,7 +569,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="5" column="29" lean-forward="false" selection-start-line="5" selection-start-column="29" selection-end-line="5" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -558,7 +576,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -566,7 +583,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="308">
           <caret line="14" column="0" lean-forward="false" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -574,7 +590,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="17" column="6" lean-forward="false" selection-start-line="17" selection-start-column="6" selection-end-line="17" selection-end-column="6" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -582,7 +597,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="110">
           <caret line="5" column="7" lean-forward="false" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -591,7 +605,6 @@
         <state split_layout="FIRST">
           <first_editor relative-caret-position="264">
             <caret line="465" column="0" lean-forward="false" selection-start-line="465" selection-start-column="0" selection-end-line="466" selection-end-column="45" />
-            <folding />
           </first_editor>
           <second_editor />
         </state>
@@ -600,8 +613,24 @@
     <entry file="file://$PROJECT_DIR$/ch7 缓存/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="FIRST">
-          <first_editor relative-caret-position="682">
-            <caret line="169" column="0" lean-forward="true" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
+          <first_editor relative-caret-position="-44">
+            <caret line="169" column="0" lean-forward="false" selection-start-line="169" selection-start-column="0" selection-end-line="169" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ch8 网关、隧道及中继/HTTP_gateway3.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ch8 网关、隧道及中继/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="FIRST">
+          <first_editor relative-caret-position="2552">
+            <caret line="116" column="55" lean-forward="false" selection-start-line="116" selection-start-column="55" selection-end-line="116" selection-end-column="55" />
             <folding />
           </first_editor>
           <second_editor />
