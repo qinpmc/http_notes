@@ -209,7 +209,7 @@ Cache-Control: private,表明响应只能被单个用户缓存，不能作为共
 
 
 - no-cache
-在释放缓存副本之前，强制高速缓存将请求提交给原始服务器进行验证。
+在释放缓存副本之前，强制高速缓存将请求**提交给原始服务器进行验证**。
 更确切的说，**no-cache应该是do-not-serve-from-cache-without-revalidation,no-store才是真正的不进行缓存**.
 
 - only-if-cached
@@ -220,6 +220,9 @@ Cache-Control: private,表明响应只能被单个用户缓存，不能作为共
 
 当客户端发送的请求中包含max-age指令时，如果判定缓存资源的缓存时间数值比指定时间的数值更小，那么客户端就接收缓存的资源。另外，当指定max-age值为0，那么缓存服务器通常需要将请求转发给源服务器.
 当服务器返回的响应中包含max-age指令时，缓存服务器将不对资源的有效性再作确认，而max-age数值代表资源保存为缓存的最长时间.
+
+如果在Cache-Control响应头设置了 "max-age" 或者 "s-max-age" 指令，那么 Expires 头会被忽略---mdn。
+
 
 - s-maxage=<seconds>
 覆盖max-age 或者 Expires 头，但是**仅适用于共享缓存(比如各个代理)**，并且私有缓存中它被忽略。
