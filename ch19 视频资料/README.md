@@ -270,3 +270,54 @@ if (req.url === "/") {
     }
 
 ```
+
+
+
+## demo7-csp
+
+csp:content-security-policy 内容安全策略
+1. 作用
+ - 限制资源获取
+ - 报告资源获取越权
+
+2. 限制方式
+- default-src 限制全局
+- 制定资源类型（connect-src img-src font-src media-src frame-src style-src script-src manifest-src）
+
+
+几种cp的设置：
+
+```
+ res.writeHead(200, {
+            "Content-Type": "text/html",
+            "Content-Security-Policy":"default-src http: https:"  //只能通过http 或者https 加载，script标签内的js不允许执行
+            //控制台错误： Refused to execute inline script because it violates the following Content Security Policy directive: "default-src http: https:".
+        })
+
+ 
+"Content-Security-Policy":"default-src 'self'"  //只能访问本域名下资源 
+
+"Content-Security-Policy":"default-src 'self'; form-action 'self'"  //只能访问本域名下资源 只能将表单提交到本域名
+
+"Content-Security-Policy":"script-src 'self'; form-action 'self'; report-uri /report"  
+
+
+// 只报告，但允许加载-----inline的js 会执行， jquery会请求回来（没有才取仅仅报告时，该请求会被block）
+"Content-Security-Policy-Report-Only":"script-src 'self'; form-action 'self'; report-uri /report"  
+
+```
+
+
+
+在html页面也可以设置：
+<meta http-equiv="Content-Security-Policy" content="script-src 'self'; form-action 'self'; report-uri /report">
+
+
+
+
+
+
+
+
+
+
