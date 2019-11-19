@@ -310,10 +310,13 @@ csp:content-security-policy 内容安全策略
 
 
 在html页面也可以设置：
-<meta http-equiv="Content-Security-Policy" content="script-src 'self'; form-action 'self'; report-uri /report">
 
+```
+<meta http-equiv="Content-Security-Policy" content="connect-src 'self'; form-action 'self'">
 
-
+ fetch("http://www.baidu.com") 
+//(index):18 Refused to connect to 'http://www.baidu.com/' because it violates the following Content Security Policy directive: "connect-src 'self'".
+```
 
 
 

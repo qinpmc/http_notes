@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta http-equiv="Content-Security-Policy" content="script-src 'self'; form-action 'self'; report-uri /report">
+    <meta http-equiv="Content-Security-Policy" content="connect-src 'self'; form-action 'self'">
     <title>Document</title>
 </head>
 <body>
@@ -14,7 +14,10 @@
     </form>
     <img src="http://www.xianlvyou.com/Public/uploads/image/20131231/52c262a38d8d5.jpg" alt="">
     <script> 
-        console.log("inline js")
+        console.log("inline js");
+        fetch("http://www.baidu.com") 
+         //(index):18 Refused to connect to 'http://www.baidu.com/' because it violates the following Content Security Policy directive: "connect-src 'self'".
+
     </script>
     <script src="test.js"></script>
 
