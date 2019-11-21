@@ -320,7 +320,172 @@ csp:content-security-policy 内容安全策略
 
 
 
+## Nginx 
 
+### Nginx 反向代理示例1(demo8-nginx1)
+
+1. nginx.conf 中配置增加（针对不同的项目，可以配置不同的内容）：
+ 
+``` 
+include    servers/*.conf; 
+ 
+```         
+
+2. 在conf下建立servers文件夹，servers文件夹建立 test.conf 文件：     
+
+
+```
+    server {
+        listen       7777;
+        server_name  a.test.com;
+ 
+        location / {
+            proxy_pass http://127.0.0.1:8888;
+			#proxy_set_header Host $host;
+        }
+    }
+
+```
+ 
+
+3.  hosts配置
+在 C:\Windows\System32\drivers\etc\hosts 中增加：
+
+```
+127.0.0.1       a.test.com
+```
+
+4. 浏览器访问  http://a.test.com:7777 
+
+
+5. proxy_set_header Host $host 说明：
+
+如果不增加，console.log("request host ",req.headers.host); 输出的是nginx 代理后的host：request host  127.0.0.1:8888
+增加后，输出的是： request host  a.test.com  
+
+
+
+### Nginx 代理缓存(demo9-nginx-cache)
+
+nginx 的配置：
+
+- 1 nginx的nginx.conf 中增加： include    servers/*.conf; 从外部读取额外的配置
+
+```
+http {
+    
+    ... 
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+	
+	include    servers/*.conf;
+
+
+```
+ 
+- 2 conf 文件夹下增加 servers文件夹，servers文件夹下创建test.conf文件,内容如下：
+
+
+```
+	proxy_cache_path cache levels=1:2 keys_zone=my_cache:10m; # 缓存的目录为 cache（nginx启动后自动创建 cache文件夹-在nginx目录下）， levels=1:2  2级目录   缓存名my_cache，10m大小
+	
+	server {
+        listen       7777;  # 代理到7777 端口
+        server_name  a.test.com;   # 服务器名称，需在C:\Windows\System32\drivers\etc\hosts 中增加 127.0.0.1   a.test.com
+ 
+        location / {
+			proxy_cache my_cache;
+            proxy_pass http://127.0.0.1:8888;  # 实际服务的地址
+			#proxy_set_header Host $host;
+        }
+    }
+```
+
+
+```
+    res.writeHead(200,{
+        "Cache-Control":"max-age=2,s-maxage=20 ",
+        // max-age :浏览器缓存时间
+        // s-maxage :代理缓存时间
+
+        // private:只有浏览器才可以缓存数据
+        // no-store: 不缓存
+    })
+
+    wait(2).then(() =>{
+            res.end("success")
+    })
+```
+
+1. 启动服务：node server.js
+2. 在chrome浏览器输入 http://localhost:7777
+3. 观察 E:\qinpmc\software\nginx-1.14.2\nginx-1.14.2\cache\3\bd，目录下生成文件：38d3d074277da9185971ec0e45a25bd3
+4. 另外打开一个浏览器，如Firefox或者 edge，观察代理缓存的效果（本来需要等待2秒返回结果，在代理缓存存在的时候，刷新页面可以立即看到结果）。如果用同一个浏览器，则由于浏览器的缓存，难以观察效果
+
+```
+... 
+
+KEY: http://127.0.0.1:8888/data
+HTTP/1.1 200 OK
+Cache-Control: max-age=2,s-maxage=20
+Date: Thu, 21 Nov 2019 12:45:18 GMT
+Connection: close
+
+success
+```
+4. 可增加 private, 如 "Cache-Control":"max-age=2,s-maxage=20,private",表示只有浏览器缓存，此时代理nginx不作缓存
+   可增加 no-store: 均不缓存
+
+
+
+### Nginx 代理缓存和 Vary头 (demo9-nginx-cache-vary)
+
+Vary响应头,比如：
+
+```
+Vary: Accept-Encoding
+Vary: Accept-Encoding,User-Agent
+
+```
+
+Vary中有User-Agent，那么即使相同的请求，如果用户使用IE打开了一个页面，再用Firefox打开这个页面的时候，代理/客户端会认为这是不同的页面，                 
+如果Vary中没有User-Agent，那么代理/客户端缓存会认为是相同的页面，直接给用户返回缓存的内容，而不会再去web服务器请求相应的页面。     
+如果Vary变量比较多，相应的增加了缓存的容量。
+
+
+
+```
+//服务端
+res.writeHead(200,{
+            "Cache-Control":"s-maxage=20",
+            "Vary":"X-Test-Cache"  
+            // max-age :浏览器缓存时间
+            // s-maxage :代理缓存时间
+            // Vary:只有请求头匹配才返回缓存
+ 
+        })
+```
+
+```
+//客户端请求
+        var index = 0;
+        var dataEle = document.getElementById("data");
+        document.getElementById("btn").addEventListener("click", function () {
+            dataEle.innerHTML = "";
+            fetch("/data", {
+                headers: {
+                    "X-Test-Cache": index++   // 故意使得每次请求的的X-Test-Cache 不同，造成缓存无法使用
+                }
+
+            }).then(function (rep) {
+                return rep.text();
+            }).then(function (text) {
+                dataEle.innerHTML = text;
+            })
+        })
+```
 
 
 
